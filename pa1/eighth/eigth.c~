@@ -1,0 +1,89 @@
+#include <stdio.h>
+#include <stdlib.h>
+	struct BSTnode{
+	    int data;
+	    struct BSTnode *left;
+	    struct BSTnode *right;
+	 };
+ struct BSTnode * insert(int data, struct BSTnode*); //rec. creating "new node " as well as inserting
+ int search(int data,struct BSTnode*); // traversal 
+ int treeheight(int data,struct BSTnode*); // traversal and counts the height of node
+struct BSTnode *create_node(int data); 
+void print_tree(struct BSTnode*);
+void free_tree(struct BSTnode*);
+struct BSTnode * create_node(int data);
+int counter =0; 
+      int main (int argc , char ** argv){
+        struct BSTnode *root =NULL;
+	char letter;
+	int num;
+	int height;
+ 
+
+	FILE * fp = fopen(argv[1],"r");
+	 if (fp==NULL){
+	    printf("error\n");
+	    exit(0);
+	} 	
+  while (fscanf(fp, "%c\t%d\n",&letter,&num)!=EOF){
+               
+               if (letter=='i'){
+		root=insert(num,root);
+                   } 
+		if (letter=='s'){
+                   if (search(num,root)==1){
+                      printf("present\n");
+              }  
+
+      } 
+  fclose(fp);
+   print_tree(root);
+	return 0;
+  }
+
+    
+ struct BSTnode* create_node(int data){
+      struct BSTnode *temp =malloc(sizeof(struct BSTnode));
+	temp->data = data;
+	temp->left =NULL;
+	temp->right =NULL;
+	return temp;
+ } 
+
+  struct BSTnode* insert(int data , struct BSTnode* temp){ 
+      if (temp==NULL){
+	 temp= create_node(data);
+	} 
+      if(temp->data > data){
+ 	temp->left = insert(data,temp->left); 
+	} 
+     if (temp->data < data){ 
+	 temp->right=insert(data, temp->right);
+     } 
+   return temp;
+ }  
+   void print_tree(struct BSTnode*temp){
+  if(temp== NULL) return;
+  print_tree(temp->left);
+  printf(" value: %d\n", temp->data);
+  print_tree(temp->right);
+
+ } 
+  
+int search(int data , struct BSTnode *temp){
+    if (temp!=NULL && temp->data==data){
+      return 1;
+    } 
+if (temp==NULL){
+	return 0;
+     }  
+     if (temp->data > data){
+          return search(data,temp->left);
+            }        
+    if (temp->data < data){
+	return search(data,temp->right);
+       }
+   
+ 
+
+
